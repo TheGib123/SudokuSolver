@@ -211,7 +211,7 @@ def Start():
 
 
 root = tk.Tk()
-root.title("test")
+root.title("Sudoku Solver")
 root.geometry("700x600")
 root.resizable(0, 0)
 root.configure(background='black')
