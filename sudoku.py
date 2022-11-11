@@ -1,65 +1,129 @@
-import os
-import time
+import tkinter as tk
+
+# sudoku puzzle in matrix form
+'''
+sudoku = [
+    [ 0, 0, 3, 0, 5, 8, 0, 0, 9 ],
+    [ 0, 0, 9, 7, 4, 0, 0, 6, 2 ],
+    [ 0, 0, 0, 2, 0, 0, 5, 3, 8 ],
+
+    [ 4, 0, 2, 0, 0, 0, 0, 1, 3 ],
+    [ 9, 0, 0, 3, 0, 4, 0, 8, 7 ],
+    [ 6, 0, 8, 0, 7, 0, 2, 5, 0 ],
+
+    [ 3, 0, 0, 0, 0, 5, 0, 2, 0 ],
+    [ 0, 0, 5, 0, 3, 7, 0, 9, 0 ],
+    [ 0, 1, 7, 0, 0, 0, 3, 4, 0 ]
+]
+'''
+'''
+sudoku = [
+    [ 0, 9, 7, 6, 8, 0, 2, 4, 5 ],
+    [ 0, 0, 8, 4, 0, 0, 0, 3, 0 ],
+    [ 0, 4, 2, 9, 1, 0, 0, 0, 0 ],
+    [ 0, 0, 5, 0, 0, 2, 0, 9, 7 ],
+    [ 7, 0, 0, 0, 0, 0, 0, 0, 6 ],
+    [ 0, 1, 9, 0, 0, 4, 5, 8, 0 ],
+    [ 0, 0, 3, 2, 0, 6, 8, 0, 0 ],
+    [ 0, 5, 1, 0, 0, 0, 7, 6, 0 ],
+    [ 0, 0, 0, 0, 7, 1, 3, 5, 4 ]
+]
+'''
+'''
+sudoku = [
+[ 0, 4, 0, 0, 0, 0, 8, 6, 5 ],
+[ 6, 0, 0, 5, 8, 0, 3, 0, 0 ],
+[ 3, 5, 0, 7, 4, 0, 0, 2, 0 ],
+[ 0, 0, 5, 8, 1, 0, 2, 0, 0 ],
+[ 0, 7, 0, 3, 9, 0, 5, 8, 0 ],
+[ 9, 8, 1, 0, 6, 0, 7, 0, 3 ],
+[ 0, 0, 0, 4, 7, 0, 0, 5, 0 ],
+[ 0, 0, 7, 0, 5, 0, 0, 0, 2 ],
+[ 0, 2, 4, 6, 3, 0, 0, 0, 0 ]
+]
+'''
+'''
+sudoku = [
+    [ 5, 0, 7, 2, 0, 0, 0, 9, 0 ],
+    [ 0, 0, 6, 0, 3, 0, 7, 0, 1 ],
+    [ 4, 0, 0, 0, 0, 0, 0, 6, 0 ],
+    [ 1, 0, 0, 4, 9, 0, 0, 0, 7 ],
+    [ 0, 0, 0, 5, 0, 8, 0, 0, 0 ],
+    [ 8, 0, 0, 0, 2, 7, 0, 0, 5 ],
+    [ 0, 7, 0, 0, 0, 0, 0, 0, 9 ],
+    [ 2, 0, 9, 0, 8, 0, 6, 0, 0 ],
+    [ 0, 4, 0, 0, 0, 9, 3, 0, 8 ]
+]
+'''
+
+sudoku = [
+    [ 0, 7, 0, 6, 0, 4, 0, 0, 0 ],
+    [ 0, 4, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 7, 3, 0, 9, 0 ],
+    [ 0, 0, 0, 5, 8, 0, 9, 7, 0 ],
+    [ 3, 0, 0, 0, 9, 1, 0, 2, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 6, 0, 0 ],
+    [ 0, 9, 5, 0, 0, 0, 0, 0, 0 ],
+    [ 2, 0, 4, 0, 0, 0, 0, 6, 0 ],
+    [ 0, 0, 0, 0, 1, 0, 0, 0, 2 ]
+]
+
+
+class GUI:
+    def __init__(self, master):
+        self.master = master
+        self.text = None
+        self.label = None
+        self.text_objects = []
+
+        self.create_text()
+        self.create_labels()
+        self.update_labels()
+
+    def update_label(self, row, col):
+        if (sudoku[row][col] == 0):
+            self.text_objects[row][col].set(' ')
+        else:
+            self.text_objects[row][col].set(str(sudoku[row][col]))
+
+    def update_labels(self):
+        for row in range(9):
+            for col in range(9):
+                if (sudoku[row][col] == 0):
+                    self.text_objects[row][col].set(' ')
+                else:
+                    self.text_objects[row][col].set(str(sudoku[row][col]))
+
+    def create_text(self):
+        for row in range(9):
+            temp = []
+            for col in range(9):     
+                self.text = tk.StringVar()
+                temp.append(self.text) 
+            self.text_objects.append(temp)
+             
+    def create_labels(self):
+        for row in range(9):
+            for col in range(9):
+                xspace = 5; yspace = 5
+                xstart = 0; ystart = 0
+                if ((col+1) % 3 == 0):
+                    xspace = 15
+                if ((row+1) % 3 == 0):
+                    yspace = 15
+                if (row == 0):
+                    ystart = 20
+                if (col == 0):
+                    xstart = 150
+
+                self.label = tk.Label(self.master, textvariable=self.text_objects[row][col], font=('Times 20'), width=2, height=1)
+                self.label.grid(column=col, row=row, padx = (xstart,xspace), pady = (ystart,yspace))
+
 
 class numPlace:
     def __init__(self, row, col):
         self.row = row
         self.col = col
-
-# sudoku puzzle in matrix form
-'''
-sudoku = [
-[ 0, 0, 3, 0, 5, 8, 0, 0, 9, ],
-[ 0, 0, 9, 7, 4, 0, 0, 6, 2, ],
-[ 0, 0, 0, 2, 0, 0, 5, 3, 8, ],
-
-[ 4, 0, 2, 0, 0, 0, 0, 1, 3, ],
-[ 9, 0, 0, 3, 0, 4, 0, 8, 7, ],
-[ 6, 0, 8, 0, 7, 0, 2, 5, 0, ],
-
-[ 3, 0, 0, 0, 0, 5, 0, 2, 0, ],
-[ 0, 0, 5, 0, 3, 7, 0, 9, 0, ],
-[ 0, 1, 7, 0, 0, 0, 3, 4, 0, ]
-]
-'''
-'''
-sudoku = [
-    [ 0, 9, 7, 6, 8, 0, 2, 4, 5, ],
-    [ 0, 0, 8, 4, 0, 0, 0, 3, 0, ],
-    [ 0, 4, 2, 9, 1, 0, 0, 0, 0, ],
-    [ 0, 0, 5, 0, 0, 2, 0, 9, 7, ],
-    [ 7, 0, 0, 0, 0, 0, 0, 0, 6, ],
-    [ 0, 1, 9, 0, 0, 4, 5, 8, 0, ],
-    [ 0, 0, 3, 2, 0, 6, 8, 0, 0, ],
-    [ 0, 5, 1, 0, 0, 0, 7, 6, 0, ],
-    [ 0, 0, 0, 0, 7, 1, 3, 5, 4, ]
-]
-'''
-'''
-sudoku = [
-[ 0, 4, 0, 0, 0, 0, 8, 6, 5, ],
-[ 6, 0, 0, 5, 8, 0, 3, 0, 0, ],
-[ 3, 5, 0, 7, 4, 0, 0, 2, 0, ],
-[ 0, 0, 5, 8, 1, 0, 2, 0, 0, ],
-[ 0, 7, 0, 3, 9, 0, 5, 8, 0, ],
-[ 9, 8, 1, 0, 6, 0, 7, 0, 3, ],
-[ 0, 0, 0, 4, 7, 0, 0, 5, 0, ],
-[ 0, 0, 7, 0, 5, 0, 0, 0, 2, ],
-[ 0, 2, 4, 6, 3, 0, 0, 0, 0, ]
-]
-'''
-sudoku = [
-    [ 0, 0, 0, 4, 0, 0, 0, 0, 0, ],
-    [ 0, 5, 0, 7, 0, 0, 0, 0, 9, ],
-    [ 0, 0, 0, 9, 0, 8, 6, 0, 1, ],
-    [ 9, 6, 4, 0, 0, 0, 0, 8, 0, ],
-    [ 0, 0, 7, 0, 0, 0, 9, 0, 0, ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
-    [ 3, 1, 0, 0, 0, 2, 0, 0, 0, ],
-    [ 0, 0, 0, 8, 0, 0, 0, 0, 7, ],
-    [ 2, 0, 0, 0, 0, 0, 1, 0, 3, ]
-]
-
 
 # used for checking 3x3 boxes
 section = {
@@ -78,24 +142,6 @@ section = {
 
 # contains a row and col for each place that equals a 0
 emptyPlaces = []
-
-# prints the puzzle to the console
-def printSudoku():
-    os.system('clear')
-    print (" -----------------------")
-    for row in range(len(sudoku)):
-        r = "| "
-        if (row == 3 or row == 6):
-            print (" -----------------------")
-        for col in range(len(sudoku)):
-            if (col == 3 or col == 6):
-                r = r + "| "
-            r = r + str(sudoku[row][col]) + " "
-        r = r + "|"
-        print(r)
-    print (" -----------------------")
-    print()
-    time.sleep(.03)
 
 # fills emptyPlaces list
 def CollectEmptySpots():
@@ -145,22 +191,33 @@ def Start():
     for emptyPlace in emptyPlaces:
         if (Finished() == True):
             print ('finished')
-            printSudoku()
+            app.update_labels()
+            root.update()
             return True
         elif (sudoku[emptyPlace.row][emptyPlace.col] == 0):
             for i in range(1,10):
                 if (checkPlacement(i, emptyPlace.row, emptyPlace.col) == True):
                     sudoku[emptyPlace.row][emptyPlace.col] = i
-                    printSudoku()
+                    app.update_label(emptyPlace.row,emptyPlace.col)
+                    root.update()
                     if (Start() == True):
                         return True
                 else:
-                    sudoku[emptyPlace.row][emptyPlace.col] = i
-                    printSudoku()
+                    sudoku[emptyPlace.row][emptyPlace.col] = 0
+                    app.update_label(emptyPlace.row,emptyPlace.col)
+                    root.update()
             sudoku[emptyPlace.row][emptyPlace.col] = 0
             return False
 
 
+root = tk.Tk()
+root.title("test")
+root.geometry("700x600")
+root.resizable(0, 0)
+root.configure(background='black')
 
+app = GUI(root)
 CollectEmptySpots()
-Start()
+start_button = tk.Button(root, text='Start', font=('Times 20'), width=5, height=1, command=Start)
+start_button.grid(column=2, row=10, columnspan=5)
+root.mainloop()
