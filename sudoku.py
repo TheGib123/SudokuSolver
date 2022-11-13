@@ -1,71 +1,19 @@
 import tkinter as tk
+from tkinter import filedialog
+from tkinter.filedialog import askopenfile
+import csv
 
 # sudoku puzzle in matrix form
-'''
 sudoku = [
-    [ 0, 0, 3, 0, 5, 8, 0, 0, 9 ],
-    [ 0, 0, 9, 7, 4, 0, 0, 6, 2 ],
-    [ 0, 0, 0, 2, 0, 0, 5, 3, 8 ],
-
-    [ 4, 0, 2, 0, 0, 0, 0, 1, 3 ],
-    [ 9, 0, 0, 3, 0, 4, 0, 8, 7 ],
-    [ 6, 0, 8, 0, 7, 0, 2, 5, 0 ],
-
-    [ 3, 0, 0, 0, 0, 5, 0, 2, 0 ],
-    [ 0, 0, 5, 0, 3, 7, 0, 9, 0 ],
-    [ 0, 1, 7, 0, 0, 0, 3, 4, 0 ]
-]
-'''
-'''
-sudoku = [
-    [ 0, 9, 7, 6, 8, 0, 2, 4, 5 ],
-    [ 0, 0, 8, 4, 0, 0, 0, 3, 0 ],
-    [ 0, 4, 2, 9, 1, 0, 0, 0, 0 ],
-    [ 0, 0, 5, 0, 0, 2, 0, 9, 7 ],
-    [ 7, 0, 0, 0, 0, 0, 0, 0, 6 ],
-    [ 0, 1, 9, 0, 0, 4, 5, 8, 0 ],
-    [ 0, 0, 3, 2, 0, 6, 8, 0, 0 ],
-    [ 0, 5, 1, 0, 0, 0, 7, 6, 0 ],
-    [ 0, 0, 0, 0, 7, 1, 3, 5, 4 ]
-]
-'''
-'''
-sudoku = [
-[ 0, 4, 0, 0, 0, 0, 8, 6, 5 ],
-[ 6, 0, 0, 5, 8, 0, 3, 0, 0 ],
-[ 3, 5, 0, 7, 4, 0, 0, 2, 0 ],
-[ 0, 0, 5, 8, 1, 0, 2, 0, 0 ],
-[ 0, 7, 0, 3, 9, 0, 5, 8, 0 ],
-[ 9, 8, 1, 0, 6, 0, 7, 0, 3 ],
-[ 0, 0, 0, 4, 7, 0, 0, 5, 0 ],
-[ 0, 0, 7, 0, 5, 0, 0, 0, 2 ],
-[ 0, 2, 4, 6, 3, 0, 0, 0, 0 ]
-]
-'''
-'''
-sudoku = [
-    [ 5, 0, 7, 2, 0, 0, 0, 9, 0 ],
-    [ 0, 0, 6, 0, 3, 0, 7, 0, 1 ],
-    [ 4, 0, 0, 0, 0, 0, 0, 6, 0 ],
-    [ 1, 0, 0, 4, 9, 0, 0, 0, 7 ],
-    [ 0, 0, 0, 5, 0, 8, 0, 0, 0 ],
-    [ 8, 0, 0, 0, 2, 7, 0, 0, 5 ],
-    [ 0, 7, 0, 0, 0, 0, 0, 0, 9 ],
-    [ 2, 0, 9, 0, 8, 0, 6, 0, 0 ],
-    [ 0, 4, 0, 0, 0, 9, 3, 0, 8 ]
-]
-'''
-
-sudoku = [
-    [ 0, 7, 0, 6, 0, 4, 0, 0, 0 ],
-    [ 0, 4, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 7, 3, 0, 9, 0 ],
-    [ 0, 0, 0, 5, 8, 0, 9, 7, 0 ],
-    [ 3, 0, 0, 0, 9, 1, 0, 2, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 6, 0, 0 ],
-    [ 0, 9, 5, 0, 0, 0, 0, 0, 0 ],
-    [ 2, 0, 4, 0, 0, 0, 0, 6, 0 ],
-    [ 0, 0, 0, 0, 1, 0, 0, 0, 2 ]
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 ]
 
 
@@ -143,6 +91,26 @@ section = {
 # contains a row and col for each place that equals a 0
 emptyPlaces = []
 
+# Opens sudoku csv file
+def open_sudoku_file():
+    global sudoku, emptyPlaces
+    file_info = filedialog.askopenfile(mode='r', filetypes=[('CSV', '*.csv')])
+    sudoku = []
+    if (file_info):
+        with open(file_info.name, mode='r', encoding='utf-8-sig') as f:
+            content = csv.reader(f)
+            for row in content:
+                sudoku.append(row)
+
+    for row in range(9):
+        for col in range(9):
+            sudoku[row][col] = int(sudoku[row][col])
+            
+    emptyPlaces = []
+    CollectEmptySpots()
+    app.update_labels()
+    root.update()
+
 # fills emptyPlaces list
 def CollectEmptySpots():
     for row in range(len(sudoku)):
@@ -186,7 +154,7 @@ def Finished():
                 return False
     return True
 
-# the recursion function 
+# recursion function 
 def Start():
     for emptyPlace in emptyPlaces:
         if (Finished() == True):
@@ -218,6 +186,8 @@ root.configure(background='black')
 
 app = GUI(root)
 CollectEmptySpots()
-start_button = tk.Button(root, text='Start', font=('Times 20'), width=5, height=1, command=Start)
-start_button.grid(column=2, row=10, columnspan=5)
+browse_button = tk.Button(root, text='Browse', font=('Times 20'), width=7, height=1, command=open_sudoku_file)
+browse_button.grid(column=1, row=10, columnspan=3)
+start_button = tk.Button(root, text='Start', font=('Times 20'), width=7, height=1, command=Start)
+start_button.grid(column=5, row=10, columnspan=3)
 root.mainloop()
